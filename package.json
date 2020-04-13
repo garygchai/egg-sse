@@ -49,7 +49,6 @@
   "bugs": {
     "url": "https://github.com/garygchai/egg/issues"
   },
-  "publishConfig": { "registry": "https://npm.pkg.github.com/" },
   "homepage": "https://github.com/garygchai/egg-sse#readme",
   "author": "changhai.gch",
   "license": "MIT"
