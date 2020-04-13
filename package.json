@@ -44,12 +44,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/eggjs/egg-sse.git"
+    "url": "https://github.com/garygchai/egg-sse.git"
   },
   "bugs": {
-    "url": "https://github.com/eggjs/egg/issues"
+    "url": "https://github.com/garygchai/egg/issues"
   },
-  "homepage": "https://github.com/eggjs/egg-sse#readme",
+  "publishConfig": { "registry": "https://npm.pkg.github.com/" },
+  "homepage": "https://github.com/garygchai/egg-sse#readme",
   "author": "changhai.gch",
   "license": "MIT"
 }
