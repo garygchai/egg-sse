@@ -71,7 +71,6 @@ module.exports = {
   },
   async task(ctx) {
     const data = {
-      retry: 5000,
       id: Math.random(),
       event: 'data',
       data: {
@@ -86,9 +85,26 @@ module.exports = {
 ```
 
 ### Subcription mode
-
+Here is the demo for redis.
 ```
-// TODO
+// app.js
+module.exports = app => {
+  app.beforeStart(() => {
+    if (app.config.redis.app) {
+      // redis subcribe the news.
+      app.redis.get('client1').subscribe('news');
+      // listen to the message
+      app.redis.get('client1').on('message', (channel, message) => {
+        // sse pulish
+        app.see.publish({
+          id: Math.random(),
+          event: 'data',
+          data: message,
+        };)
+      });
+    }
+  });
+};
 ```
 
 see [config/config.default.js](config/config.default.js) for more detail.
