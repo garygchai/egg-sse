@@ -113,6 +113,7 @@ ctx.app.redis.clients.get('client2').publish('news', 'hello')
 ```
 
 ### Egg messenger mode
+```
 // app.js
 module.exports = app => {
   app.beforeStart(() => {
