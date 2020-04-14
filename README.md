@@ -36,6 +36,8 @@ exports.sse = {
 };
 ```
 
+see [config/config.default.js](config/config.default.js) for more detail.
+
 ## API
 ```
 /**
@@ -84,7 +86,7 @@ module.exports = {
 
 ```
 
-### Subcription mode
+### Redis Subcription mode
 Here is the demo for redis.
 ```
 // app.js
@@ -105,13 +107,31 @@ module.exports = app => {
     }
   });
 };
+
+// publush.js
+ctx.app.redis.clients.get('client2').publish('news', 'hello')
 ```
 
-see [config/config.default.js](config/config.default.js) for more detail.
+### Egg messenger mode
+// app.js
+module.exports = app => {
+  app.beforeStart(() => {
+    if (app.config.redis.app) {
+      app.messenger.on('message', message => {
+        // sse pulish
+        app.see.publish({
+          id: Math.random(),
+          event: 'data',
+          data: message,
+        };)
+      });
+    }
+  });
+};
 
-## Example
-
-<!-- example here -->
+// publish.js
+ctx.app.sendToApp('message', 'hello')
+```
 
 ## Questions & Suggestions
 
