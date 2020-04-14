@@ -117,16 +117,14 @@ ctx.app.redis.clients.get('client2').publish('news', 'hello')
 // app.js
 module.exports = app => {
   app.beforeStart(() => {
-    if (app.config.redis.app) {
-      app.messenger.on('message', message => {
-        // sse pulish
-        app.see.publish({
-          id: Math.random(),
-          event: 'data',
-          data: message,
-        };)
-      });
-    }
+    app.messenger.on('message', message => {
+      // sse pulish
+      app.see.publish({
+        id: Math.random(),
+        event: 'data',
+        data: message,
+      };)
+    });
   });
 };
 
