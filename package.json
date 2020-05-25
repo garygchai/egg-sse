@@ -1,6 +1,6 @@
 {
   "name": "egg-sse",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Server Sent Event for eggjs",
   "eggPlugin": {
     "name": "sse"
@@ -33,12 +33,6 @@
     "pkgfiles": "egg-bin pkgfiles",
     "autod": "autod"
   },
-  "files": [
-    "app.js",
-    "agent.js",
-    "config",
-    "app"
-  ],
   "ci": {
     "version": "8, 10"
   },
