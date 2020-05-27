@@ -20,7 +20,6 @@ class SSEManager {
    */
   publish(data) {
     this.ssePool = this.getAlive();
-    console.log(this.ssePool.length)
     this.ssePool.forEach(s => s.send(data));
   }
   startPing() {
