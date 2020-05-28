@@ -2,8 +2,7 @@
 'use strict';
 module.exports = {
   sse: {
-    client: {
-      path: '/stream',
+    path: '/stream',
       headers: {
         'Content-Type': 'text/event-stream',
         'Cache-Control': 'no-cache, no-transform',
@@ -14,6 +13,5 @@ module.exports = {
       },
       maxClients: 10000,
       pingInterval: 10000,
-    }
   },
 };
