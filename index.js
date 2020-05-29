@@ -20,8 +20,7 @@ class SSEManager {
    */
   publishAll(data) {
     for (let key in this.ssePool) {
-      const ssePool = this.getAlive(key);
-      ssePool.forEach(s => s.send(data));
+      this.publish(key, data);
     }
   }
   /**

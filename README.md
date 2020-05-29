@@ -41,7 +41,8 @@ see [config/config.default.js](config/config.default.js) for more detail.
 ## API
 ```
 /**
-  *
+  * Publish message to some connections.
+  * @param {String} key the key of pool.
   * @param {String} data sse data to send, if it's a string, an anonymous event will be sent.
   * @param {Object} data sse send object mode
   * @param {Object|String} data.data data to send, if it's object, it will be converted to json
@@ -49,17 +50,24 @@ see [config/config.default.js](config/config.default.js) for more detail.
   * @param {Number} data.id sse event id
   * @param {Number} data.retry sse retry times
   */
-app.sse.publish(data)
+  publish(key, data)
+}
 ```
-Publish data to all sse items.
 
-`app.sse.close()`  
-Close all the sse items.
+```
+/**
+  * Publish message to all connections.
+  * @param {String} data sse data to send, if it's a string, an anonymous event will be sent.
+  * @param {Object} data sse send object mode
+  * @param {Object|String} data.data data to send, if it's object, it will be converted to json
+  * @param {String} data.event sse event name
+  * @param {Number} data.id sse event id
+  * @param {Number} data.retry sse retry times
+  */
+  publishAll(data)
+```
 
-`app.sse.open()`  
-Open all the sse items.
-
-## Usage
+## Server Side Usage
 
 ### Schedule mode
 Get data to publish to all the clients.
@@ -79,8 +87,8 @@ module.exports = {
         aa: 11,
       },
     };
-    // publish the data to all sse.
-    ctx.app.sse.publish(data);
+    // Publish data to all connections.
+    ctx.app.sse.publishAll(data);
   },
 };
 
@@ -97,8 +105,8 @@ module.exports = app => {
       app.redis.get('client1').subscribe('news');
       // listen to the message
       app.redis.get('client1').on('message', (channel, message) => {
-        // sse pulish
-        app.see.publish({
+        // Publish data to the connections of `channel` pool.
+        app.see.publish(channel, {
           id: Math.random(),
           event: 'data',
           data: message,
@@ -118,7 +126,7 @@ ctx.app.redis.clients.get('client2').publish('news', 'hello')
 module.exports = app => {
   app.beforeStart(() => {
     app.messenger.on('message', message => {
-      // sse pulish
+      // Publish data to all connections.
       app.see.publish({
         id: Math.random(),
         event: 'data',
@@ -130,6 +138,21 @@ module.exports = app => {
 
 // publish.js
 ctx.app.sendToApp('message', 'hello')
+```
+
+## Client Side Usage
+```
+const eventSource = new EventSource(`http://myhost.com/stream?connectKey=${YOUR_BIZ_KEY}`);
+eventSource.onopen = e => {
+  console.log('Server sent event is opened.', e);
+};
+eventSource.onerror = e => {
+  console.log('Server sent event is error.', e);
+};
+eventSource.onmessage = e => {
+  const data = JSON.parse(e.data);
+  console.log('Recieve message from server:\n', data);
+};
 ```
 
 ## Questions & Suggestions
