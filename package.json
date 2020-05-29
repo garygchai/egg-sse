@@ -1,6 +1,6 @@
 {
   "name": "egg-sse",
-  "version": "1.1.1",
+  "version": "1.0.4",
   "description": "Server Sent Event for eggjs",
   "eggPlugin": {
     "name": "sse"
