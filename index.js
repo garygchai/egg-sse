@@ -5,7 +5,6 @@
 class SSEManager {
   constructor(opts = {}) {
     this.ssePool = {};
-    this.connectKey = opts.path.replace('/', '');
     this.pingInterval = opts.pingInterval || 10000;
     // Keep running
     this.startPing();
