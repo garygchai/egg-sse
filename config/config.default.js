@@ -13,5 +13,6 @@ module.exports = {
     },
     maxClients: 10000,
     pingInterval: 10000,
+    cacheKey: '@sse/count',
   },
 };

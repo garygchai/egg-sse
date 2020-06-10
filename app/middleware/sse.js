@@ -12,12 +12,9 @@ module.exports = () => {
         return await next();
       }
       const { connectKey } = ctx.request.query
-      ctx.app.sse.ssePool[config.path] = ctx.app.sse.ssePool[config.path] || [];
-      let ssePool = ctx.app.sse.ssePool[config.path];
-      if (connectKey) {
-        ctx.app.sse.ssePool[connectKey] = ctx.app.sse.ssePool[connectKey] || []
-        ssePool = ctx.app.sse.ssePool[connectKey];
-      }
+      const cacheKey = connectKey || config.cacheKey;
+      ctx.app.sse.ssePool[cacheKey] = ctx.app.sse.ssePool[cacheKey] || [];
+      let ssePool = ctx.app.sse.ssePool[cacheKey];
       if (ssePool.length >= config.maxClients) {
         console.error('SSE client number more than the maximum, Unable to create the sse response');
         return await next();

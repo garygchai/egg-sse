@@ -57,11 +57,7 @@ class SSETransform extends Transform {
   close() {
     if (!this.ended) {
       this.ended = true;
-    }
-  }
-  open() {
-    if (this.ended) {
-      this.ended = false;
+      this.emit('close');
     }
   }
   _transform(data, encoding, callback) {

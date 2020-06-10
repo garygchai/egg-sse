@@ -5,9 +5,15 @@
 class SSEManager {
   constructor(opts = {}) {
     this.ssePool = {};
+    this.connectKey = opts.path.replace('/', '');
     this.pingInterval = opts.pingInterval || 10000;
     // Keep running
     this.startPing();
+  }
+  startPing() {
+    setInterval(() => {
+      this.publishAll(':ping')
+    }, this.pingInterval);
   }
   /**
    *
@@ -37,11 +43,6 @@ class SSEManager {
     const ssePool = this.getAlive(key);
     ssePool.forEach(s => s.send(data));
   }
-  startPing() {
-    setInterval(() => {
-      this.publishAll(':ping')
-    }, this.pingInterval);
-  }
   /**
    *
    * @param {String} key the key of pool
@@ -50,6 +51,50 @@ class SSEManager {
     const ssePool = this.ssePool[key] || []
     this.ssePool[key]= ssePool.filter(s => !s._writableState.destroyed);
     return this.ssePool[key];
+  }
+  /**
+   *
+   * @param {String} key the key of pool
+   */
+  close(key) {
+    const connections = this.ssePool[key];
+    if (connections && connections.length) {
+      connections.forEach(con => {
+        con.close();
+      })
+    }
+  }
+  closeAll() {
+    for (const key in this.ssePool) {
+      const connections = this.ssePool[key];
+      if (connections && connections.length) {
+        connections.forEach(con => {
+          con.close();
+        })
+      }
+    }
+  }
+  /**
+   *
+   * @param {String} key the key of pool
+   */
+  count(key) {
+    let count = 0;
+    const connections = this.ssePool[key];
+    if (connections && connections.length) {
+      count = connections.length;
+    }
+    return count;
+  }
+  countAll() {
+    let count = 0;
+    for (const key in this.ssePool) {
+      const connections = this.ssePool[key];
+      if (connections && connections.length) {
+        count += connections.length;
+      }
+    }
+    return count;
   }
 }
 
