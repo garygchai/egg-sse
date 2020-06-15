@@ -12,6 +12,7 @@ class SSETransform extends Transform {
     this.opts = opts;
     this.ctx = ctx;
     this.ended = false;
+    this.setMaxListeners(0);
     ctx.req.socket.setTimeout(0);
     ctx.req.socket.setNoDelay(true);
     ctx.req.socket.setKeepAlive(true);
@@ -97,6 +98,9 @@ class SSETransform extends Transform {
     // Concentrated to send
     res = res.join('\n') + '\n\n';
     this.push(res);
+    this.on('error', err => {
+      console.error(err);
+    });
     this.emit('message', res);
     if (this.ctx.body && typeof this.ctx.body.flush === 'function' && this.ctx.body.flush.name !== 'deprecated') {
       this.ctx.body.flush();
